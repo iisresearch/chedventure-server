@@ -1,7 +1,7 @@
 import {
     Entity,
     Column,
-    PrimaryGeneratedColumn, OneToMany, PrimaryColumn, ManyToOne
+    OneToMany, ManyToOne
 } from "typeorm";
 import {Asset} from "./asset";
 import {Game} from "./game";
@@ -9,7 +9,7 @@ import {Context} from "./context";
 
 @Entity()
 export class Character extends Asset {
-    @Column({ nullable: true})
+    @Column({nullable: true})
     title!: string;
 
     @Column()
