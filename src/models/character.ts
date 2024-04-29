@@ -5,6 +5,7 @@ import {
 } from "typeorm";
 import {Asset} from "./asset";
 import {Game} from "./game";
+import {Context} from "./context";
 
 @Entity()
 export class Character extends Asset {
@@ -16,4 +17,7 @@ export class Character extends Asset {
 
     @ManyToOne(() => Game, (game) => game.characters, {onDelete: "CASCADE"})
     game!: Game;
+
+    @OneToMany(() => Context, context => context.character, {cascade: true, nullable: true, onDelete: "CASCADE"})
+    contexts!: Context[];
 }

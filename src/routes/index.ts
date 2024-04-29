@@ -5,6 +5,7 @@ import PlayRouter from "./play.router";
 import DraftRouter from "./draft.router";
 import RoomRouter from "./room.router";
 import CharacterRouter from "./character.router";
+import ContextRouter from "./context.router";
 import {oktaAuth} from "../auth";
 
 const router = express.Router();
@@ -12,6 +13,7 @@ const router = express.Router();
 router.use("/games", oktaAuth, GameRouter);
 router.use("/rooms", oktaAuth, RoomRouter);
 router.use("/characters", oktaAuth, CharacterRouter)
+router.use("/contexts", oktaAuth, ContextRouter)
 router.use("/draft", oktaAuth, DraftRouter)
 router.use("/play", PlayRouter);
 
