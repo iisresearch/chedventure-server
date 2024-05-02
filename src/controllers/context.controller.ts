@@ -17,6 +17,11 @@ export default class ContextController {
         return getContextsToCharacter(characterId);
     }
 
+
+    public async getDialogues(contextId: number, req: any): Promise<Array<Context>> {
+        return getDialogues(contextId, req);
+    }
+
     public async createContext(characterId: number, req: any): Promise<Context | null | undefined> {
         const ch = await getCharacter(characterId);
 
@@ -46,7 +51,6 @@ export default class ContextController {
             return e;
         });
     }
-
     public async deleteContext(id: number): Promise<DeleteResult> {
         return deleteContext(id);
     }
