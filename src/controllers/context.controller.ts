@@ -1,16 +1,18 @@
 import {
     deleteContext,
-    getContext, getContexts,
+    getContext, getContextsToGame,
     getContextsToCharacter, saveContext
 } from "../repositories/context";
 import {Context} from "../models/context";
 import {getCharacter} from "../repositories/character";
 import {DeleteResult} from "typeorm";
+import { getDialogues } from "../repositories/dialogue";
+import {Dialogue} from "../models/dialogue";
 
 export default class ContextController {
 
-    public async getContexts(userId: string): Promise<Array<Context>> {
-        return getContexts(userId);
+    public async getContexts(gameId: string): Promise<Array<Context>> {
+        return getContextsToGame(gameId);
     }
 
     public async getContextsOfCharacter(characterId: string): Promise<Array<Context>> {
@@ -18,8 +20,8 @@ export default class ContextController {
     }
 
 
-    public async getDialogues(contextId: number, req: any): Promise<Array<Context>> {
-        return getDialogues(contextId, req);
+    public async getDialogues(contextId: number): Promise<Array<Dialogue>> {
+        return getDialogues(contextId);
     }
 
     public async createContext(characterId: number, req: any): Promise<Context | null | undefined> {
@@ -51,6 +53,7 @@ export default class ContextController {
             return e;
         });
     }
+
     public async deleteContext(id: number): Promise<DeleteResult> {
         return deleteContext(id);
     }

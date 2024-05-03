@@ -5,6 +5,7 @@ import {
 } from "typeorm";
 import {RoomToGame} from "./roomToGame";
 import {Character} from "./character";
+import {Context} from "./context";
 
 
 @Entity()
@@ -48,5 +49,8 @@ export class Game {
 
     @OneToMany(() => Character, character => character.game, {cascade: true, nullable: true, onDelete: "CASCADE"})
     characters!: Character[];
+
+    @OneToMany(() => Context, context => context.game, {cascade: true, nullable: true, onDelete: "CASCADE"})
+    contexts!: Context[];
 }
 

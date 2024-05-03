@@ -11,12 +11,12 @@ export const getContext = async (id: number): Promise<Context | null> => {
     return contextRepository;
 }
 
-export const getContexts = async (createdByUserId: string): Promise<Array<Context>> => {
+export const getContextsToGame = async (id: string): Promise<Array<Context>> => {
     const contextRepository = await AppDataSource
         .getRepository(Context)
         .createQueryBuilder("context")
-        .where("context.createdByUserId = :createdByUserId", {createdByUserId: createdByUserId})
-        .orWhere("context.createdByUserId IS NULL")
+        .where("context.game.id = :id", {gameId: id})
+        .orWhere("context.id IS NULL")
         .getMany()
     return contextRepository;
 }

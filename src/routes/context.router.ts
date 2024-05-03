@@ -3,28 +3,29 @@ import ContextController from "../controllers/context.controller";
 
 const router = express.Router();
 
-router.get("/", async (_req, res) => {
-    try {
-        // @ts-ignore
-        const userId = _req.user.uid;
-
-        const controller = new ContextController();
-        const response = await controller.getContexts(userId);
-        return res.send(response);
-    } catch (err: any) {
-        console.log(err);
-        if (err?.code === "22P02") {
-            return res.status(404).send({message: "Context not found"})
-        } else {
-            return res.status(400).send({message: "Unexpected error. Please try again"})
-        }
-    }
-});
+// TODO: remove if not needed
+// router.get("/", async (_req, res) => {
+//     try {
+//         // @ts-ignore
+//         const userId = _req.user.uid;
+//
+//         const controller = new ContextController();
+//         const response = await controller.getContexts(userId);
+//         return res.send(response);
+//     } catch (err: any) {
+//         console.log(err);
+//         if (err?.code === "22P02") {
+//             return res.status(404).send({message: "Context not found"})
+//         } else {
+//             return res.status(400).send({message: "Unexpected error. Please try again"})
+//         }
+//     }
+// });
 
 router.get("/game/:id", async (req, res) => {
     try {
         const controller = new ContextController();
-        const response = await controller.getContextsOfCharacter(req.params.id);
+        const response = await controller.getContexts(req.params.id);
         return res.send(response);
     } catch (err: any) {
         if (err?.code === "22P02") {
@@ -33,14 +34,10 @@ router.get("/game/:id", async (req, res) => {
             return res.status(400).send({message: "Unexpected error. Please try again"})
         }
     }
-
 });
 
-router.post("/game/:id", async (req, res) => {
+router.post("/character/:id", async (req, res) => {
     try {
-        // @ts-ignore
-        const userId = req.user.uid;
-
         const controller = new ContextController();
         const response = await controller.createContext(Number(req.params.id), req.body);
         return res.send(response);
@@ -49,7 +46,7 @@ router.post("/game/:id", async (req, res) => {
     }
 })
 
-router.put("/game/:id", async (req, res) => {
+router.put("/character/:id", async (req, res) => {
     try {
         const controller = new ContextController();
         const response = await controller.updateContext(Number(req.params.id), req.body);
@@ -59,7 +56,7 @@ router.put("/game/:id", async (req, res) => {
     }
 })
 
-router.delete("/game/:id", async (req, res) => {
+router.delete("/character/:id", async (req, res) => {
     try {
         const controller = new ContextController();
         const response = await controller.deleteContext(Number(req.params.id));

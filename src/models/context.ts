@@ -4,6 +4,7 @@ import {
     PrimaryGeneratedColumn, ManyToOne
 } from "typeorm";
 import {Character} from "./character";
+import {Game} from "./game";
 
 @Entity()
 export class Context {
@@ -24,4 +25,7 @@ export class Context {
 
     @ManyToOne(() => Character, (character) => character.contexts, {onDelete: "CASCADE"})
     character!: Character;
+
+    @ManyToOne(() => Game, (game) => game.contexts, {onDelete: "CASCADE"})
+    game!: Game;
 }
