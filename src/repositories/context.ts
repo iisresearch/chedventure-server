@@ -15,7 +15,7 @@ export const getContextsToGame = async (id: string): Promise<Array<Context>> => 
     const contextRepository = await AppDataSource
         .getRepository(Context)
         .createQueryBuilder("context")
-        .where("context.game.id = :id", {gameId: id})
+        .where("context.game.id = :id", {id: id})
         .orWhere("context.id IS NULL")
         .getMany()
     return contextRepository;

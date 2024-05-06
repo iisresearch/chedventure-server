@@ -1,10 +1,11 @@
 import {
     Entity,
     Column,
-    PrimaryGeneratedColumn, ManyToOne
+    PrimaryGeneratedColumn, ManyToOne, OneToMany
 } from "typeorm";
 import {Character} from "./character";
 import {Game} from "./game";
+import {Dialogue} from "./dialogue";
 
 @Entity()
 export class Context {
@@ -17,15 +18,12 @@ export class Context {
     @Column()
     prompt!: string;
 
-    @Column()
-    utterance!: string;
+    @OneToMany(() => Dialogue, (dialogue) => dialogue.context, {onDelete: "CASCADE"})
+    dialogues!: Dialogue[];
 
-    @Column()
-    response!: string;
-
-    @ManyToOne(() => Character, (character) => character.contexts, {onDelete: "CASCADE"})
+    @ManyToOne(() => Character, (character) => character.contexts, {onDelete: "SET NULL"})
     character!: Character;
 
-    @ManyToOne(() => Game, (game) => game.contexts, {onDelete: "CASCADE"})
+    @ManyToOne(() => Game, (game) => game.contexts, {onDelete: "SET NULL"})
     game!: Game;
 }

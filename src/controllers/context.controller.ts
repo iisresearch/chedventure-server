@@ -29,11 +29,12 @@ export default class ContextController {
 
         return Promise.resolve(ch).then(function (character) {
             if (!character) return null;
-            var context = new Context();
-            context.character = character;
+            const context = new Context();
             context.name = req.name;
             context.prompt = req.prompt;
-            context.response = req.response;
+            context.dialogues = req.dialogues;
+            context.character = character;
+            context.game = character.game;
             return saveContext(context);
         }, function (e) {
             return e;
@@ -47,7 +48,9 @@ export default class ContextController {
             if (!context) return null;
             context.name = req.name;
             context.prompt = req.prompt;
-            context.response = req.response;
+            context.dialogues = req.dialogues;
+            context.character = req.character;
+            context.game = req.game;
             return saveContext(context);
         }, function (e) {
             return e;

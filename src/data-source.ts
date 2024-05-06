@@ -8,6 +8,7 @@ import {Character} from "./models/character";
 import {RoomToGame} from "./models/roomToGame";
 import {HitboxToRoomToGame} from "./models/hitboxToRoomToGame";
 import {Context} from "./models/context";
+import {Dialogue} from "./models/dialogue";
 
 require('dotenv').config();
 
@@ -19,7 +20,7 @@ export const AppDataSource = new DataSource({
     username: process.env.POSTGRES_USER || "test",
     password: process.env.POSTGRES_PASSWORD || "test",
     database: process.env.POSTGRES_DB || "test",*/
-    entities: [Game, Room, Hitbox, Coordinate, Character, Context, RoomToGame, HitboxToRoomToGame],
+    entities: [Game, Room, Hitbox, Coordinate, Character, Context, Dialogue, RoomToGame, HitboxToRoomToGame],
     migrations: ["src/migration/*.ts"],
     migrationsTableName: 'migrations',
     synchronize: true,

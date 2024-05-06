@@ -38,6 +38,8 @@ router.get("/game/:id", async (req, res) => {
 
 router.post("/character/:id", async (req, res) => {
     try {
+        //const userId = req.user.uid;
+
         const controller = new ContextController();
         const response = await controller.createContext(Number(req.params.id), req.body);
         return res.send(response);
