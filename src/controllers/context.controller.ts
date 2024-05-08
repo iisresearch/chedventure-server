@@ -6,7 +6,7 @@ import {
 import {Context} from "../models/context";
 import {getCharacter} from "../repositories/character";
 import {DeleteResult} from "typeorm";
-import { getDialogues } from "../repositories/dialogue";
+import { getMessages } from "../repositories/message";
 import {Message} from "../models/message";
 
 export default class ContextController {
@@ -20,8 +20,8 @@ export default class ContextController {
     }
 
 
-    public async getDialogues(contextId: number): Promise<Array<Message>> {
-        return getDialogues(contextId);
+    public async getMessages(contextId: number): Promise<Array<Message>> {
+        return getMessages(contextId);
     }
 
     public async createContext(characterId: number, req: any): Promise<Context | null | undefined> {
@@ -32,9 +32,18 @@ export default class ContextController {
             const context = new Context();
             context.name = req.name;
             context.prompt = req.prompt;
-            context.messages = req.dialogues;
             context.character = character;
             context.game = character.game;
+
+            const messages: Message[] = [];
+            for (let messageData of req.messages) {
+                let message = new Message();
+                message = messageData
+
+                messages.push(message);
+            }
+            context.messages = messages;
+
             return saveContext(context);
         }, function (e) {
             return e;
@@ -48,7 +57,7 @@ export default class ContextController {
             if (!context) return null;
             context.name = req.name;
             context.prompt = req.prompt;
-            context.messages = req.dialogues;
+            context.messages = req.messages;
             context.character = req.character;
             context.game = req.game;
             return saveContext(context);

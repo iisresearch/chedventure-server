@@ -18,7 +18,7 @@ export class Context {
     @Column()
     prompt!: string;
 
-    @OneToMany(() => Message, (message) => message.context, {onDelete: "CASCADE"})
+    @OneToMany(() => Message, (message) => message.context, { cascade: true, nullable: true, eager: true, onDelete: "CASCADE"})
     messages!: Message[];
 
     @ManyToOne(() => Character, (character) => character.contexts, {onDelete: "SET NULL"})
