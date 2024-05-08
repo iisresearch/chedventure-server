@@ -6,6 +6,7 @@ export const getCharacter = async (id: number): Promise<Character | null> => {
     const character = await AppDataSource
         .getRepository(Character)
         .createQueryBuilder("character")
+        .leftJoinAndSelect("character.game", "game")
         .where("character.id = :id", { id: id})
         .getOne();
     return character;
