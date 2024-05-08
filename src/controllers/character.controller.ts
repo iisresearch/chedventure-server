@@ -25,6 +25,7 @@ export default class CharacterController {
             character.name = req.name;
             character.title = req.title;
             character.description = req.description;
+            character.history = req.history;
             character.chatbotUrl = req.chatbotUrl;
             // TODO:
             // character.context add Start Context to each new character by default
@@ -43,6 +44,7 @@ export default class CharacterController {
             character.name = req.name;
             character.title = req.title;
             character.description = req.description;
+            character.history = req.history;
             character.chatbotUrl = req.chatbotUrl;
             return saveCharacter(character);
         }, function (e) {

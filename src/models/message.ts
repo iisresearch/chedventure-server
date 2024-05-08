@@ -6,7 +6,7 @@ import {
 import {Context} from "./context";
 
 @Entity()
-export class Dialogue {
+export class Message {
     @PrimaryGeneratedColumn()
     intent!: number;
 

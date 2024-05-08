@@ -30,5 +30,4 @@ export class HitboxToRoomToGame {
 
     @ManyToOne(() => Character, {nullable: true, onDelete: "SET NULL"})
     targetCharacter!: Character;
-
 }

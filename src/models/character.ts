@@ -12,6 +12,9 @@ export class Character extends Asset {
     @Column({nullable: true})
     title!: string;
 
+    @Column({default: 0})
+    history!: number;
+
     @Column()
     chatbotUrl!: string;
 

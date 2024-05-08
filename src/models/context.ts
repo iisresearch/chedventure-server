@@ -5,7 +5,7 @@ import {
 } from "typeorm";
 import {Character} from "./character";
 import {Game} from "./game";
-import {Dialogue} from "./dialogue";
+import {Message} from "./message";
 
 @Entity()
 export class Context {
@@ -18,8 +18,8 @@ export class Context {
     @Column()
     prompt!: string;
 
-    @OneToMany(() => Dialogue, (dialogue) => dialogue.context, {onDelete: "CASCADE"})
-    dialogues!: Dialogue[];
+    @OneToMany(() => Message, (message) => message.context, {onDelete: "CASCADE"})
+    messages!: Message[];
 
     @ManyToOne(() => Character, (character) => character.contexts, {onDelete: "SET NULL"})
     character!: Character;

@@ -7,7 +7,7 @@ import {Context} from "../models/context";
 import {getCharacter} from "../repositories/character";
 import {DeleteResult} from "typeorm";
 import { getDialogues } from "../repositories/dialogue";
-import {Dialogue} from "../models/dialogue";
+import {Message} from "../models/message";
 
 export default class ContextController {
 
@@ -20,7 +20,7 @@ export default class ContextController {
     }
 
 
-    public async getDialogues(contextId: number): Promise<Array<Dialogue>> {
+    public async getDialogues(contextId: number): Promise<Array<Message>> {
         return getDialogues(contextId);
     }
 
@@ -32,7 +32,7 @@ export default class ContextController {
             const context = new Context();
             context.name = req.name;
             context.prompt = req.prompt;
-            context.dialogues = req.dialogues;
+            context.messages = req.dialogues;
             context.character = character;
             context.game = character.game;
             return saveContext(context);
@@ -48,7 +48,7 @@ export default class ContextController {
             if (!context) return null;
             context.name = req.name;
             context.prompt = req.prompt;
-            context.dialogues = req.dialogues;
+            context.messages = req.dialogues;
             context.character = req.character;
             context.game = req.game;
             return saveContext(context);
@@ -60,6 +60,5 @@ export default class ContextController {
     public async deleteContext(id: number): Promise<DeleteResult> {
         return deleteContext(id);
     }
-
 
 }

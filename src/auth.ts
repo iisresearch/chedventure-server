@@ -21,7 +21,7 @@ export async function oktaAuth(req:Request, res:Response, next:NextFunction) {
         };
         next();
     }
-    catch (err) {
-        return res.status(401).send("err.message");
+    catch (err: any) {
+        return res.status(401).send(err.message);
     }
 }
