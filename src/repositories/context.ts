@@ -1,12 +1,14 @@
 import {Context} from "../models/context";
 import {AppDataSource} from "../data-source";
 import {DeleteResult} from "typeorm";
+import {Room} from "../models/room";
 
 export const getContext = async (id: number): Promise<Context | null> => {
     const contextRepository = await AppDataSource
         .getRepository(Context)
         .createQueryBuilder("context")
         .where("context.id = :id", {id: id})
+        .leftJoinAndSelect("context.messages", "messages")
         .getOne()
     return contextRepository;
 }
@@ -16,6 +18,7 @@ export const getContextsToGame = async (id: string): Promise<Array<Context>> => 
         .getRepository(Context)
         .createQueryBuilder("context")
         .where("context.game.id = :id", {id: id})
+        .leftJoinAndSelect("context.messages", "messages")
         .orWhere("context.id IS NULL")
         .getMany()
     return contextRepository;
@@ -26,6 +29,7 @@ export const getContextsToCharacter = async (id: string): Promise<Array<Context>
         .getRepository(Context)
         .createQueryBuilder("context")
         .where("context.character.id = :id", {id: id})
+        .leftJoinAndSelect("context.messages", "messages")
         .getMany()
     return contextRepository;
 }

@@ -11,12 +11,12 @@ export const getMessage = async (id: number): Promise<Message | null> => {
     return messageRepository;
 }
 
-export const getMessages = async (contextId: number): Promise<Array<Message>> => {
+export const getMessagesToContext = async (contextId: number): Promise<Array<Message>> => {
     const messageRepository = await AppDataSource
         .getRepository(Message)
         .createQueryBuilder("message")
-        .where("message.contextId = :createdByUserId", {contextId: contextId})
-        .orWhere("message.contextId IS NULL")
+        .where("message.contextId = :contextId", {contextId: contextId})
+        //.orWhere("message.contextId IS NULL")
         .getMany()
     return messageRepository;
 }
@@ -30,12 +30,12 @@ export const getMessagesToCharacter = async (id: string): Promise<Array<Message>
     return messageRepository;
 }
 
-export const deleteMessage = async (id: number): Promise<DeleteResult> => {
+export const deleteMessage = async (intent: number): Promise<DeleteResult> => {
     const messageRepository = await AppDataSource
         .createQueryBuilder()
         .delete()
         .from(Message)
-        .where("id = :id", {id: id})
+        .where("intent = :intent", {intent: intent})
         .execute()
     return messageRepository;
 }
@@ -44,4 +44,10 @@ export const saveMessage = async (message: Message): Promise<Message | null> => 
     const messageRepository = AppDataSource.getRepository(Message);
     const msg = await messageRepository.save(message)
     return await getMessage(msg.intent);
+}
+
+export const saveMessages = async (messages: Message[]): Promise<Array<Message>> => {
+    const messageRepository = AppDataSource.getRepository(Message);
+    const msgs = await messageRepository.save(messages)
+    return await getMessagesToContext(msgs[0].context.id);
 }

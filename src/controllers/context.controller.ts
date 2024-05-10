@@ -6,7 +6,7 @@ import {
 import {Context} from "../models/context";
 import {getCharacter} from "../repositories/character";
 import {DeleteResult} from "typeorm";
-import { getMessages } from "../repositories/message";
+import {getMessagesToContext, saveMessage} from "../repositories/message";
 import {Message} from "../models/message";
 
 export default class ContextController {
@@ -21,7 +21,7 @@ export default class ContextController {
 
 
     public async getMessages(contextId: number): Promise<Array<Message>> {
-        return getMessages(contextId);
+        return getMessagesToContext(contextId);
     }
 
     public async createContext(characterId: number, req: any): Promise<Context | null | undefined> {
@@ -35,14 +35,11 @@ export default class ContextController {
             context.character = character;
             context.game = character.game;
 
-            const messages: Message[] = [];
-            for (let messageData of req.messages) {
+            context.messages = req.messages.map((messageData: Message) => {
                 let message = new Message();
-                message = messageData
-
-                messages.push(message);
-            }
-            context.messages = messages;
+                message = messageData;
+                return message;
+            });
 
             return saveContext(context);
         }, function (e) {
@@ -53,13 +50,28 @@ export default class ContextController {
     public async updateContext(id: number, req: any): Promise<Context | null | undefined> {
         const c = getContext(id);
 
-        return Promise.resolve(c).then(function (context) {
+        return Promise.resolve(c).then(async function (context) {
             if (!context) return null;
             context.name = req.name;
             context.prompt = req.prompt;
-            context.messages = req.messages;
             context.character = req.character;
             context.game = req.game;
+
+            const existingMessages = await getMessagesToContext(context.id);
+            context.messages = req.messages.map((messageData: Message) => {
+                let message = existingMessages.find(msg => msg.intent === messageData.intent);
+
+                if (message) {
+                    // Use the spread operator to copy properties from messageData to message
+                    message = { ...message, ...messageData };
+                } else {
+                    // If the message doesn't exist, create a new one
+                    message = new Message();
+                    message = { ...message, ...messageData };
+                }
+                return message;
+            });
+
             return saveContext(context);
         }, function (e) {
             return e;

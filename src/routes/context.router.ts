@@ -48,7 +48,7 @@ router.post("/character/:id", async (req, res) => {
     }
 })
 
-router.put("/character/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
     try {
         const controller = new ContextController();
         const response = await controller.updateContext(Number(req.params.id), req.body);
@@ -58,7 +58,7 @@ router.put("/character/:id", async (req, res) => {
     }
 })
 
-router.delete("/character/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         const controller = new ContextController();
         const response = await controller.deleteContext(Number(req.params.id));
