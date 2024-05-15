@@ -10,10 +10,10 @@ export class Message {
     @PrimaryGeneratedColumn()
     intent!: number;
 
-    @Column()
+    @Column({nullable: true})
     continuation!: number;
 
-    @Column()
+    @Column({nullable: true})
     contextualisation!: string;
 
     @Column()
@@ -22,6 +22,6 @@ export class Message {
     @Column()
     response!: string;
 
-    @ManyToOne(() => Context, (context) => context, {onDelete: "CASCADE"})
+    @ManyToOne(() => Context, (context) => context.messages, {onDelete: "CASCADE"})
     context!: Context;
 }

@@ -31,7 +31,6 @@ export default class ContextController {
             if (!character) return null;
             const context = new Context();
             context.name = req.name;
-            context.prompt = req.prompt;
             context.character = character;
             context.game = character.game;
 
@@ -53,9 +52,9 @@ export default class ContextController {
         return Promise.resolve(c).then(async function (context) {
             if (!context) return null;
             context.name = req.name;
-            context.prompt = req.prompt;
+            //context.prompt = req.prompt;
             context.character = req.character;
-            context.game = req.game;
+            //context.game = req.game;
 
             const existingMessages = await getMessagesToContext(context.id);
             context.messages = req.messages.map((messageData: Message) => {
@@ -67,7 +66,12 @@ export default class ContextController {
                 } else {
                     // If the message doesn't exist, create a new one
                     message = new Message();
-                    message = { ...message, ...messageData };
+                    message.continuation = messageData.continuation;
+                    message.contextualisation = messageData.contextualisation;
+                    message.utterance = messageData.utterance;
+                    message.response = messageData.response;
+
+                    //message = { ...message, ...messageData };
                 }
                 return message;
             });

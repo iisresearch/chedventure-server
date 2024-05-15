@@ -16,6 +16,8 @@ export const getCharactersToGame = async (id: string): Promise<Array<Character>>
     const characterRepository = await AppDataSource
         .getRepository(Character)
         .createQueryBuilder("character")
+        .leftJoinAndSelect("character.contexts", "context")
+        .leftJoinAndSelect("context.messages", "messages")
         .where("character.game.id = :id", { id: id })
         .getMany();
     return characterRepository
