@@ -19,6 +19,7 @@ export const getContextsToGame = async (id: string): Promise<Array<Context>> => 
         .createQueryBuilder("context")
         .where("context.game.id = :id", {id: id})
         .leftJoinAndSelect("context.messages", "messages")
+        .leftJoinAndSelect("context.character", "character")
         .orWhere("context.id IS NULL")
         .getMany()
     return contextRepository;
@@ -30,6 +31,7 @@ export const getContextsToCharacter = async (id: string): Promise<Array<Context>
         .createQueryBuilder("context")
         .where("context.character.id = :id", {id: id})
         .leftJoinAndSelect("context.messages", "messages")
+        .leftJoinAndSelect("context.character", "character")
         .getMany()
     return contextRepository;
 }
