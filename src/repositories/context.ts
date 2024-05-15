@@ -9,6 +9,7 @@ export const getContext = async (id: number): Promise<Context | null> => {
         .createQueryBuilder("context")
         .where("context.id = :id", {id: id})
         .leftJoinAndSelect("context.messages", "messages")
+        .leftJoinAndSelect("context.character", "character")
         .getOne()
     return contextRepository;
 }
