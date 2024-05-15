@@ -20,7 +20,6 @@ export const getContextsToGame = async (id: string): Promise<Array<Context>> => 
         .where("context.game.id = :id", {id: id})
         .leftJoinAndSelect("context.messages", "messages")
         .leftJoinAndSelect("context.character", "character")
-        .orWhere("context.id IS NULL")
         .getMany()
     return contextRepository;
 }
