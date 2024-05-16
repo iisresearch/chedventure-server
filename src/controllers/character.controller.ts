@@ -1,5 +1,3 @@
-
-
 import {
     deleteCharacter,
     getCharacter,
@@ -8,6 +6,8 @@ import {
 import {Character} from "../models/character";
 import {getGame} from "../repositories/game";
 import {DeleteResult} from "typeorm";
+import {Context} from "../models/context";
+import {saveContext} from "../repositories/context";
 
 export default class CharacterController {
 
@@ -31,7 +31,26 @@ export default class CharacterController {
             // TODO:
             // character.context add Start Context to each new character by default
             // createContext();
+
+            // Create default contexts for the new character
+            const contextNames = ["Start", "Option", "End"];
+
+            //Promise.resolve(contextNames).then((name)=> {
+
+            for (let name of contextNames) {
+                const context = new Context();
+                context.character = character;
+                context.name = name;
+                context.game = character.game;
+                context.messages = [];
+                //let savedContext = saveContext(context);
+                // if (savedContext!=null)
+                character.contexts.push(context)
+            }
+            //});
+
             return saveCharacter(character);
+
         }, function (e) {
             return e;
         });
