@@ -21,9 +21,9 @@ export class Context {
     @OneToMany(() => Message, (message) => message.context, { cascade: true, nullable: true, eager: true, onDelete: "CASCADE"})
     messages!: Message[];
 
-    @ManyToOne(() => Character, (character) => character.contexts, {onDelete: "SET NULL"})
+    @ManyToOne(() => Character, (character) => character.contexts, { onDelete: "CASCADE"})
     character!: Character;
 
-    @ManyToOne(() => Game, (game) => game.contexts, {onDelete: "SET NULL"})
+    @ManyToOne(() => Game, (game) => game.contexts, { onDelete: "CASCADE"})
     game!: Game;
 }

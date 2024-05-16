@@ -29,7 +29,21 @@ router.get("/game/:id", async (req, res) => {
         return res.send(response);
     } catch (err: any) {
         if (err?.code === "22P02") {
-            return res.status(404).send({message: "Context not found"})
+            return res.status(404).send({message: "Contexts not found"})
+        } else {
+            return res.status(400).send({message: "Unexpected error. Please try again"})
+        }
+    }
+});
+
+router.get("/character/:id", async (req, res) => {
+    try {
+        const controller = new ContextController();
+        const response = await controller.getContextsOfCharacter(req.params.id);
+        return res.send(response);
+    } catch (err: any) {
+        if (err?.code === "22P02") {
+            return res.status(404).send({message: "Contexts not found"})
         } else {
             return res.status(400).send({message: "Unexpected error. Please try again"})
         }
