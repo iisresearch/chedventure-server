@@ -6,6 +6,7 @@ import {
 import {Asset} from "./asset";
 import {Game} from "./game";
 import {Context} from "./context";
+import {Message} from "./message";
 
 @Entity()
 export class Character extends Asset {
@@ -23,4 +24,7 @@ export class Character extends Asset {
 
     @OneToMany(() => Context, context => context.character, {cascade: true, nullable: true, onDelete: "CASCADE"})
     contexts!: Context[];
+
+    @OneToMany(() => Message, message => message.character, {cascade: true, nullable: true, onDelete: "CASCADE"})
+    messages!: Message[];
 }
