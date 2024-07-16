@@ -2,11 +2,11 @@ import {Message} from "../models/message";
 import {AppDataSource} from "../data-source";
 import {DeleteResult} from "typeorm";
 
-export const getMessage = async (id: number): Promise<Message | null> => {
+export const getMessage = async (intent: number): Promise<Message | null> => {
     const messageRepository = await AppDataSource
         .getRepository(Message)
         .createQueryBuilder("message")
-        .where("message.id = :id", {id: id})
+        .where("message.intent = :intent", {intent: intent})
         .getOne()
     return messageRepository;
 }

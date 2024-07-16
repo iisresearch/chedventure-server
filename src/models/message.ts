@@ -17,10 +17,10 @@ export class Message {
     @Column({default: ''})
     contextualisation!: string;
 
-    @Column({default: ''})
+    @Column("text",{default: ''})
     utterance!: string;
 
-    @Column({default: ''})
+    @Column("text",{default: ''})
     response!: string;
 
     @Column({default: ''})
