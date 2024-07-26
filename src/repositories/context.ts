@@ -21,6 +21,7 @@ export const getContextsToGame = async (id: string): Promise<Array<Context>> => 
         .where("context.game.id = :id", {id: id})
         .leftJoinAndSelect("context.messages", "messages")
         .leftJoinAndSelect("context.character", "character")
+        .orderBy("context.id", "ASC")
         .getMany()
     return contextRepository;
 }
@@ -31,6 +32,8 @@ export const getContextsToCharacter = async (id: string): Promise<Array<Context>
         .createQueryBuilder("context")
         .where("context.character.id = :id", {id: id})
         .leftJoinAndSelect("context.messages", "messages")
+        .orderBy("context.id", "ASC")
+        .orderBy("messages.intent", "ASC")
         .getMany()
     return contextRepository;
 }

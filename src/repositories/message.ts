@@ -7,6 +7,7 @@ export const getMessage = async (intent: number): Promise<Message | null> => {
         .getRepository(Message)
         .createQueryBuilder("message")
         .where("message.intent = :intent", {intent: intent})
+        .orderBy("message.intent", "ASC") // Ensure messages are ordered by intent
         .getOne()
     return messageRepository;
 }
@@ -16,6 +17,7 @@ export const getMessagesToContext = async (contextId: number): Promise<Array<Mes
         .getRepository(Message)
         .createQueryBuilder("message")
         .where("message.contextId = :contextId", {contextId: contextId})
+        .orderBy("message.intent", "ASC") // Ensure messages are ordered by intent
         //.orWhere("message.contextId IS NULL")
         .getMany()
     return messageRepository;
@@ -26,6 +28,7 @@ export const getMessagesToCharacter = async (id: string): Promise<Array<Message>
         .getRepository(Message)
         .createQueryBuilder("message")
         .where("message.character.id = :id", {id: id})
+        .orderBy("message.intent", "ASC") // Ensure messages are ordered by intent
         .getMany()
     return messageRepository;
 }

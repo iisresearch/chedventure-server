@@ -45,7 +45,7 @@ router.get("/character/:id", async (req, res) => {
         if (err?.code === "22P02") {
             return res.status(404).send({message: "Contexts not found"})
         } else {
-            return res.status(400).send({message: "Unexpected error. Please try again"})
+            return res.status(400).send({message: err.message + " Unexpected error. Please try again"})
         }
     }
 });

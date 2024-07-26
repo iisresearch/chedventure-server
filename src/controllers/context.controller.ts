@@ -6,7 +6,7 @@ import {
 import {Context} from "../models/context";
 import {getCharacter} from "../repositories/character";
 import {DeleteResult} from "typeorm";
-import {getMessagesToContext, saveMessage} from "../repositories/message";
+import {getMessagesToContext} from "../repositories/message";
 import {Message} from "../models/message";
 
 export default class ContextController {
@@ -28,14 +28,19 @@ export default class ContextController {
         const ch = await getCharacter(characterId);
 
         return Promise.resolve(ch).then(function (character) {
-            if (!character) return null;
+            if (!character) throw new Error('Character not found');
             const context = new Context();
             context.name = req.name;
             context.character = character;
             context.game = character.game;
 
-            context.messages = req.messages.map((messageData: Message) => {
+            // Sort messages by intent
+            const sortedMessages = req.messages.sort((a: Message, b: Message) => a.intent - b.intent);
+
+            context.messages = sortedMessages.map((messageData: Message, index: number) => {
                 let message = new Message();
+                message.character = context.character;
+                message.continuation = index < sortedMessages.length - 1 ? sortedMessages[index + 1].intent.toString() : '';
                 message = messageData;
                 return message;
             });
@@ -50,26 +55,29 @@ export default class ContextController {
         const c = getContext(id);
 
         return Promise.resolve(c).then(async function (context) {
-            if (!context) return null;
+            if (!context) throw new Error('Context not found');
             context.name = req.name;
             //context.prompt = req.prompt;
-            context.character = req.character;
             //context.game = req.game;
-
             const existingMessages = await getMessagesToContext(context.id);
-            context.messages = req.messages.map((messageData: Message) => {
+            context.messages = req.messages.map((messageData: Message, index: number) => {
                 let message = existingMessages.find(msg => msg.intent === messageData.intent);
 
                 if (message) {
                     // Use the spread operator to copy properties from messageData to message
-                    message = { ...message, ...messageData };
+                    message = { ...message, ...messageData,
+                        character: context.character,
+                        continuation: index < req.messages.length - 1 ? req.messages[index + 1].intent.toString() : '',
+                    };
+                    console.log("message: ", message)
                 } else {
                     // If the message doesn't exist, create a new one
                     message = new Message();
-                    message.continuation = messageData.continuation;
+                    message.continuation = index < req.messages.length - 1 ? req.messages[index + 1].intent.toString() : '';
                     message.contextualisation = messageData.contextualisation;
                     message.utterance = messageData.utterance;
                     message.response = messageData.response;
+                    message.character = context.character;
 
                     //message = { ...message, ...messageData };
                 }
