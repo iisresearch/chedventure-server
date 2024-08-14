@@ -40,7 +40,6 @@ export default class ContextController {
             context.messages = sortedMessages.map((messageData: Message, index: number) => {
                 let message = new Message();
                 message.character = context.character;
-                message.continuation = index < sortedMessages.length - 1 ? sortedMessages[index + 1].intent.toString() : '';
                 message = messageData;
                 return message;
             });
@@ -57,8 +56,6 @@ export default class ContextController {
         return Promise.resolve(c).then(async function (context) {
             if (!context) throw new Error('Context not found');
             context.name = req.name;
-            //context.prompt = req.prompt;
-            //context.game = req.game;
             const existingMessages = await getMessagesToContext(context.id);
             context.messages = req.messages.map((messageData: Message, index: number) => {
                 let message = existingMessages.find(msg => msg.intent === messageData.intent);
@@ -67,19 +64,16 @@ export default class ContextController {
                     // Use the spread operator to copy properties from messageData to message
                     message = { ...message, ...messageData,
                         character: context.character,
-                        continuation: index < req.messages.length - 1 ? req.messages[index + 1].intent.toString() : '',
                     };
                     console.log("message: ", message)
                 } else {
                     // If the message doesn't exist, create a new one
                     message = new Message();
-                    message.continuation = index < req.messages.length - 1 ? req.messages[index + 1].intent.toString() : '';
+                    message.continuation = messageData.continuation;
                     message.contextualisation = messageData.contextualisation;
                     message.utterance = messageData.utterance;
                     message.response = messageData.response;
                     message.character = context.character;
-
-                    //message = { ...message, ...messageData };
                 }
                 return message;
             });
