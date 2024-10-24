@@ -15,9 +15,6 @@ export class Context {
     @Column()
     name!: string;
 
-    // @Column({nullable: true})
-    // prompt!: string;
-
     @OneToMany(() => Message, (message) => message.context, { cascade: true, nullable: true, eager: true, onDelete: "CASCADE"})
     messages!: Message[];
 

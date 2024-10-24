@@ -1,7 +1,7 @@
 import {
     Entity,
     Column,
-    OneToMany, ManyToOne
+    OneToMany, ManyToOne, UpdateDateColumn
 } from "typeorm";
 import {Asset} from "./asset";
 import {Game} from "./game";
@@ -18,6 +18,9 @@ export class Character extends Asset {
 
     @Column()
     chatbotUrl!: string;
+    // Last Update is also updated via contextSubscriber and messageSubscriber to update the lastUpdated
+    @UpdateDateColumn()
+    lastUpdated!: Date;
 
     @ManyToOne(() => Game, (game) => game.characters, {onDelete: "CASCADE"})
     game!: Game;

@@ -77,8 +77,9 @@ router.delete("/:id", async (req, res) => {
         const controller = new ContextController();
         const response = await controller.deleteContext(Number(req.params.id));
         return res.send(response);
-    } catch {
-        return res.status(400).send({message: "Unexpected error. Please try again"})
+    } catch(err: any) {
+        console.log(err);
+        return res.status(400).send({message: `Unexpected error: ${err.message} Please try again`})
     }
 })
 

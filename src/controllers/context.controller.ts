@@ -84,7 +84,7 @@ export default class ContextController {
         });
     }
 
-    public async deleteContext(id: number): Promise<DeleteResult> {
+    public async deleteContext(id: number): Promise<Context> {
         return deleteContext(id);
     }
 
