@@ -1,6 +1,5 @@
 import {Message} from "../models/message";
 import {AppDataSource} from "../data-source";
-import {DeleteResult} from "typeorm";
 
 export const getMessage = async (intent: number): Promise<Message | null> => {
     const messageRepository = await AppDataSource
@@ -33,14 +32,18 @@ export const getMessagesToCharacter = async (id: string): Promise<Array<Message>
     return messageRepository;
 }
 
-export const deleteMessage = async (intent: number): Promise<DeleteResult> => {
-    const messageRepository = await AppDataSource
-        .createQueryBuilder()
-        .delete()
-        .from(Message)
-        .where("intent = :intent", {intent: intent})
-        .execute()
-    return messageRepository;
+export const removeMessage = async (intent: number): Promise<Message> => {
+    const messageRepository = AppDataSource.getRepository(Message);
+    const message = await messageRepository.findOne({
+        where: { intent },
+        relations: ["character"],
+    });
+    if (!message) {
+        throw new Error("Context not found");
+    }
+    // remove() is used to trigger the MessageSubscriber afterRemove event, delete() doesn't trigger it
+    await messageRepository.remove(message);
+    return message;
 }
 
 export const saveMessage = async (message: Message): Promise<Message | null> => {

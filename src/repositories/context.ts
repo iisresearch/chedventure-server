@@ -38,7 +38,7 @@ export const getContextsToCharacter = async (id: string): Promise<Array<Context>
     return contextRepository;
 }
 
-export const deleteContext = async (id: number): Promise<Context> => {
+export const removeContext = async (id: number): Promise<Context> => {
     const contextRepository = AppDataSource.getRepository(Context);
     const context = await contextRepository.findOne({
         where: { id },
@@ -47,7 +47,7 @@ export const deleteContext = async (id: number): Promise<Context> => {
     if (!context) {
         throw new Error("Context not found");
     }
-    // Remove() is used in order to trigger the ContextSubscriber afterRemove event, delete() doesn't trigger it
+    // remove() is used to trigger the ContextSubscriber afterRemove event, delete() doesn't trigger it
     await contextRepository.remove(context);
     return context;
 }

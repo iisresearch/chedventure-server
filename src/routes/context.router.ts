@@ -75,7 +75,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
     try {
         const controller = new ContextController();
-        const response = await controller.deleteContext(Number(req.params.id));
+        const response = await controller.removeContext(Number(req.params.id));
         return res.send(response);
     } catch(err: any) {
         console.log(err);

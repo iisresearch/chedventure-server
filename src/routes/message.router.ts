@@ -16,7 +16,7 @@ router.put("/:intent", async (req, res) => {
 
 router.delete("/:intent", async (req, res) => {
     try {
-        const response = await controller.deleteMessage(Number(req.params.intent));
+        const response = await controller.removeMessage(Number(req.params.intent));
 
         return res.send(response);
     } catch {

@@ -1,4 +1,4 @@
-import {deleteMessage, getMessage, saveMessage} from "../repositories/message";
+import {getMessage, removeMessage, saveMessage} from "../repositories/message";
 import {Message} from "../models/message";
 
 export default class MessageController {
@@ -19,8 +19,8 @@ export default class MessageController {
         });
     }
 
-    async deleteMessage(intent: number) {
-        return deleteMessage(intent);
+    async removeMessage(intent: number) {
+        return removeMessage(intent);
     }
 
 }

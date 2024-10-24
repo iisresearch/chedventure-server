@@ -1,5 +1,5 @@
 import {
-    deleteContext,
+    removeContext,
     getContext, getContextsToGame,
     getContextsToCharacter, saveContext
 } from "../repositories/context";
@@ -84,8 +84,8 @@ export default class ContextController {
         });
     }
 
-    public async deleteContext(id: number): Promise<Context> {
-        return deleteContext(id);
+    public async removeContext(id: number): Promise<Context> {
+        return removeContext(id);
     }
 
 }
